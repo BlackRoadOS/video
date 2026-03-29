@@ -1,11 +1,12 @@
-
 var __defProp = Object.defineProperty;
 var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
 
-// src/worker.js
-var VideoRoom = class {
+// src/index.js
+var __defProp2 = Object.defineProperty;
+var __name2 = /* @__PURE__ */ __name((target, value) => __defProp2(target, "name", { value, configurable: true }), "__name");
+var VideoRoom = /* @__PURE__ */ __name(class {
   static {
-    __name(this, "VideoRoom");
+    __name2(this, "VideoRoom");
   }
   constructor(state, env) {
     this.state = state;
@@ -39,7 +40,8 @@ var VideoRoom = class {
     this.sessions.set(peerId, { ws, name, joinedAt: (/* @__PURE__ */ new Date()).toISOString() });
     const existingPeers = [];
     for (const [id, s] of this.sessions) {
-      if (id !== peerId) existingPeers.push({ id, name: s.name });
+      if (id !== peerId)
+        existingPeers.push({ id, name: s.name });
     }
     ws.send(JSON.stringify({ type: "welcome", peerId, peers: existingPeers, chatHistory: this.chatHistory.slice(-50) }));
     this.broadcast({ type: "peer-joined", peerId, name }, peerId);
@@ -62,7 +64,8 @@ var VideoRoom = class {
         case "chat":
           const chatMsg = { name, text: (msg.text || "").slice(0, 2e3), time: (/* @__PURE__ */ new Date()).toISOString() };
           this.chatHistory.push(chatMsg);
-          if (this.chatHistory.length > 200) this.chatHistory = this.chatHistory.slice(-100);
+          if (this.chatHistory.length > 200)
+            this.chatHistory = this.chatHistory.slice(-100);
           this.broadcast({ type: "chat", ...chatMsg }, null);
           break;
         case "media-state":
@@ -90,7 +93,7 @@ var VideoRoom = class {
       }
     }
   }
-};
+}, "VideoRoom");
 function addSecurityHeaders(response) {
   const h = new Headers(response.headers);
   h.set("X-Content-Type-Options", "nosniff");
@@ -102,6 +105,7 @@ function addSecurityHeaders(response) {
   return new Response(response.body, { status: response.status, headers: h });
 }
 __name(addSecurityHeaders, "addSecurityHeaders");
+__name2(addSecurityHeaders, "addSecurityHeaders");
 var worker_default = {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -125,6 +129,7 @@ var worker_default = {
       }
     }
     __name(ensureTable, "ensureTable");
+    __name2(ensureTable, "ensureTable");
     try {
       await ensureTable();
     } catch {
@@ -182,7 +187,8 @@ var worker_default = {
     if (roomInfoMatch) {
       const roomId = roomInfoMatch[1];
       const room = await env.DB.prepare("SELECT * FROM video_rooms WHERE id = ?").bind(roomId).first();
-      if (!room) return jsonResp({ error: "Room not found" }, 404);
+      if (!room)
+        return jsonResp({ error: "Room not found" }, 404);
       const doId = env.ROOM.idFromName(roomId);
       const stub = env.ROOM.get(doId);
       const infoUrl = new URL(request.url);
@@ -216,6 +222,7 @@ function jsonResp(data, status = 200) {
   });
 }
 __name(jsonResp, "jsonResp");
+__name2(jsonResp, "jsonResp");
 var HTML = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -303,7 +310,7 @@ input {
 input:focus { border-color: var(--border-hover); }
 input::placeholder { color: var(--text-muted); }
 
-/* ─── Lobby ───────────────────────────────────────────────────── */
+/* \u2500\u2500\u2500 Lobby \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */
 .lobby {
   display: flex;
   flex-direction: column;
@@ -402,7 +409,7 @@ input::placeholder { color: var(--text-muted); }
   font-family: var(--font-mono);
 }
 
-/* ─── Top Bar ─────────────────────────────────────────────────── */
+/* \u2500\u2500\u2500 Top Bar \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */
 .top-bar {
   display: flex;
   align-items: center;
@@ -435,7 +442,7 @@ input::placeholder { color: var(--text-muted); }
   align-items: center;
 }
 
-/* ─── Circle Buttons (media controls) ─────────────────────────── */
+/* \u2500\u2500\u2500 Circle Buttons (media controls) \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */
 .ctrl-circle {
   width: 40px;
   height: 40px;
@@ -460,7 +467,7 @@ input::placeholder { color: var(--text-muted); }
 .ctrl-circle.leave { border-color: var(--red); color: var(--red); }
 .ctrl-circle.leave:hover { background: var(--red); color: #fff; }
 
-/* ─── Main Layout ─────────────────────────────────────────────── */
+/* \u2500\u2500\u2500 Main Layout \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */
 .main {
   display: flex;
   height: calc(100vh - 53px);
@@ -474,7 +481,7 @@ input::placeholder { color: var(--text-muted); }
   min-width: 0;
 }
 
-/* ─── Video Grid ──────────────────────────────────────────────── */
+/* \u2500\u2500\u2500 Video Grid \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */
 .video-grid {
   flex: 1;
   display: grid;
@@ -551,7 +558,7 @@ input::placeholder { color: var(--text-muted); }
   font-weight: 600;
 }
 
-/* ─── Sidebar / Chat ──────────────────────────────────────────── */
+/* \u2500\u2500\u2500 Sidebar / Chat \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */
 .sidebar {
   width: 340px;
   background: var(--bg);
@@ -662,7 +669,7 @@ input::placeholder { color: var(--text-muted); }
 .participant-item .p-icons span.on { color: var(--green); }
 .participant-item .p-icons span.off { color: var(--red); }
 
-/* ─── Status Bar ──────────────────────────────────────────────── */
+/* \u2500\u2500\u2500 Status Bar \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */
 .status-bar {
   display: flex;
   align-items: center;
@@ -681,7 +688,7 @@ input::placeholder { color: var(--text-muted); }
 }
 .status-bar .dot.disconnected { background: var(--red); }
 
-/* ─── Toast ───────────────────────────────────────────────────── */
+/* \u2500\u2500\u2500 Toast \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */
 .toast {
   position: fixed;
   bottom: 24px;
@@ -701,7 +708,7 @@ input::placeholder { color: var(--text-muted); }
 }
 .toast.show { opacity: 1; }
 
-/* ─── Responsive ──────────────────────────────────────────────── */
+/* \u2500\u2500\u2500 Responsive \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 */
 @media (max-width: 768px) {
   .sidebar { position: fixed; right: 0; top: 53px; bottom: 0; width: 100%; z-index: 10; }
   .top-bar .controls { gap: 4px; }
@@ -720,7 +727,7 @@ input::placeholder { color: var(--text-muted); }
 <nav id="br-nav"><div class="ni"><div class="nl"><button class="nb" onclick="history.length>1?history.back():location.href='https://blackroad.io'" title="Back">&larr;</button><a href="https://blackroad.io" class="nh"><div class="nm"><span style="background:#FF6B2B"></span><span style="background:#FF2255"></span><span style="background:#CC00AA"></span><span style="background:#8844FF"></span><span style="background:#4488FF"></span><span style="background:#00D4FF"></span></div><span class="nt">BlackRoad</span></a><span class="ns">/</span><span class="np">Video</span></div><div class="nk"><a href="https://blackroad.io">Home</a><a href="https://chat.blackroad.io">Chat</a><a href="https://search.blackroad.io">Search</a><a href="https://tutor.blackroad.io">Tutor</a><a href="https://pay.blackroad.io">Pay</a><a href="https://canvas.blackroad.io">Canvas</a><a href="https://cadence.blackroad.io">Cadence</a><a href="https://video.blackroad.io" class="ac">Video</a><a href="https://radio.blackroad.io">Radio</a><a href="https://game.blackroad.io">Game</a><a href="https://roadtrip.blackroad.io">Agents</a><a href="https://roadcode.blackroad.io">RoadCode</a><a href="https://hq.blackroad.io">HQ</a><a href="https://app.blackroad.io">Dashboard</a></div><button class="mm" onclick="document.getElementById('br-dd').classList.toggle('open')">&#9776;</button></div></nav><div id="br-dd"><a href="https://blackroad.io">Home</a><a href="https://chat.blackroad.io">Chat</a><a href="https://search.blackroad.io">Search</a><a href="https://tutor.blackroad.io">Tutor</a><a href="https://pay.blackroad.io">Pay</a><a href="https://canvas.blackroad.io">Canvas</a><a href="https://cadence.blackroad.io">Cadence</a><a href="https://video.blackroad.io" class="ac">Video</a><a href="https://radio.blackroad.io">Radio</a><a href="https://game.blackroad.io">Game</a><a href="https://roadtrip.blackroad.io">Agents</a><a href="https://roadcode.blackroad.io">RoadCode</a><a href="https://hq.blackroad.io">HQ</a><a href="https://app.blackroad.io">Dashboard</a></div>
 <script>document.addEventListener('click',function(e){var d=document.getElementById('br-dd');if(d&&d.classList.contains('open')&&!e.target.closest('#br-nav')&&!e.target.closest('#br-dd'))d.classList.remove('open')});<\/script>
 
-<!-- ─── Lobby ──────────────────────────────────────────────────── -->
+<!-- \u2500\u2500\u2500 Lobby \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 -->
 <div id="lobby" class="lobby">
   <div class="lobby-brand">
     <div class="mark">
@@ -745,7 +752,7 @@ input::placeholder { color: var(--text-muted); }
   <div class="lobby-footer">BlackRoad OS, Inc. -- video.blackroad.io</div>
 </div>
 
-<!-- ─── App ────────────────────────────────────────────────────── -->
+<!-- \u2500\u2500\u2500 App \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500 -->
 <div id="app" style="display:none">
   <div class="top-bar">
     <div class="brand-marks">
@@ -816,7 +823,7 @@ const ICE_SERVERS = [
   { urls: 'stun:stun2.l.google.com:19302' },
 ];
 
-const pathRoom = location.pathname.match(/^\/room\/([a-z0-9-]+)/);
+const pathRoom = location.pathname.match(/^/room/([a-z0-9-]+)/);
 if (pathRoom) S.roomId = pathRoom[1];
 
 async function loadRooms() {
@@ -832,8 +839,8 @@ async function loadRooms() {
       '<div class="room-item">' +
         '<div><div class="rname">' + esc(r.name) + '</div><div class="rcreator">' + esc(r.created_by || '') + ' -- ' + timeAgo(r.last_active) + '</div></div>' +
         '<div class="rright">' +
-          '<button class="share-btn" onclick="event.stopPropagation();copyRoomLink(\'' + esc(r.id) + '\')" title="Copy link">LINK</button>' +
-          '<button class="join-btn primary" onclick="joinRoom(\'' + esc(r.id) + '\')">Join</button>' +
+          '<button class="share-btn" onclick="event.stopPropagation();copyRoomLink('' + esc(r.id) + '')" title="Copy link">LINK</button>' +
+          '<button class="join-btn primary" onclick="joinRoom('' + esc(r.id) + '')">Join</button>' +
         '</div>' +
       '</div>'
     ).join('');
@@ -1229,5 +1236,5 @@ export {
   VideoRoom,
   worker_default as default
 };
-//# sourceMappingURL=worker.js.map
+//# sourceMappingURL=index.js.map
 
