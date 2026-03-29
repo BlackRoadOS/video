@@ -1,0 +1,6 @@
+name = "roadview-video"
+main = "src/index.js"
+compatibility_date = "2024-12-01"
+routes = [
+  { pattern = "video.blackroad.io/*", custom_domain = true }
+]
